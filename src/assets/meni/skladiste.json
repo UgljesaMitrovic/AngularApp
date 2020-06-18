@@ -1,0 +1,12 @@
+[
+  { "id": 0, "naziv": "Toceno 0.5", "cena": 170, "naStanju": 50 },
+  { "id": 1, "naziv": "Toceno 0.3", "cena": 130, "naStanju": 50 },
+  { "id": 4, "naziv": "Espresso kraci", "cena": 90, "naStanju": 50 },
+  { "id": 2, "naziv": "Espresso duzi", "cena": 110, "naStanju": 50 },
+  { "id": 3, "naziv": "Coca-cola 0.25", "cena": 130, "naStanju": 50 },
+  { "id": 5, "naziv": "Schweppes 0.25", "cena": 130, "naStanju": 50 },
+  { "id": 6, "naziv": "Sok od jabuke 0.25", "cena": 120, "naStanju": 50 },
+  { "id": 7, "naziv": "Cedevita", "cena": 100, "naStanju": 50 },
+  { "id": 8, "naziv": "Viski 0.03", "cena": 200, "naStanju": 50 },
+  { "id": 9, "naziv": "Viski flasa", "cena": 6000, "naStanju": 10 }
+]
