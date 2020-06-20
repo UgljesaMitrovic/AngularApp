@@ -14,6 +14,7 @@ export class RacunComponent implements OnInit {
     //let id = parseInt(this.route.snapshot.paramMap.get('id'));
     //this.stoId = id;
     this.route.paramMap.subscribe((params: ParamMap) => {
+      // Za trenutni url da napravi komponentu (na osnovu id-a)
       let id = parseInt(params.get('id'));
       this.stoId = id;
     });

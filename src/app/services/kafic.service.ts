@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { IProizvod } from './proizvod';
+import { IProizvod } from '../models/proizvod';
 import { Observable } from 'rxjs';
 
 @Injectable({
@@ -22,4 +22,13 @@ export class KaficService {
   donesiNarudzbinu(): Observable<IProizvod[]> {
     return this.http.get<IProizvod[]>(this._url);
   }
+  izracunajIznosNarudzbine(nizProizvoda: IProizvod[]) {
+    let niz: Array<number> = [];
+    nizProizvoda.forEach((el) => {
+      niz.push(el.cena);
+    });
+    return niz.reduce(this.reducer);
+  }
+  reducer = (accumulator: number, currentValue: number) =>
+    accumulator + currentValue;
 }

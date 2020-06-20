@@ -1,8 +1,8 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { RacunComponent } from './racun/racun.component';
-import { PageNotFoundComponent } from './page-not-found/page-not-found.component';
-import { KaficComponent } from './kafic/kafic.component';
+import { RacunComponent } from './components/racun/racun.component';
+import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
+import { KaficComponent } from './components/kafic/kafic.component';
 
 const routes: Routes = [
   {
