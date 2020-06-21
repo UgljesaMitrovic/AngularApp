@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Store, select } from '@ngrx/store';
+import { State } from 'src/app/store/reducers/sto.reducers';
+import { getKasu } from 'src/app/store/reducers';
 
 @Component({
   selector: 'app-kafic',
@@ -7,9 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class KaficComponent implements OnInit {
   public naziv: string = 'ElectroniCaffe';
+  public kasa: number;
   public stolovi: Array<number> = [1, 2, 3, 4, 5];
 
-  constructor() {}
+  constructor(private store: Store<{ naruci: State }>) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.store.pipe(select(getKasu)).subscribe((data) => {
+      this.kasa = data;
+    });
+  }
 }

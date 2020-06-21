@@ -1,11 +1,17 @@
 import { createReducer, on } from '@ngrx/store';
-import { dodajNarudzbinu, dodajNaRacun } from '../actions/sto.actions';
+import {
+  dodajNarudzbinu,
+  dodajNaRacun,
+  izbrisiNarudzbinu,
+  naplatiRacun,
+} from '../actions/sto.actions';
 import { INarudzbina } from 'src/app/models/narudzbina';
 import { IRacun } from 'src/app/models/racun';
 
 export interface State {
   nizNarudzbina: Array<INarudzbina>;
   nizRacuna: Array<IRacun>;
+  kasa: number;
 }
 export const inicijalniState: State = {
   nizNarudzbina: [
@@ -22,6 +28,7 @@ export const inicijalniState: State = {
     { idStola: 4, naruceniProizvodi: [], iznos: 0 },
     { idStola: 5, naruceniProizvodi: [], iznos: 0 },
   ],
+  kasa: 0,
 };
 
 const _narudzbinaReducer = createReducer(
@@ -31,9 +38,19 @@ const _narudzbinaReducer = createReducer(
     nizNarudzbina: [
       ...state.nizNarudzbina.slice(0, idStola - 1),
       {
-        ...state.nizNarudzbina[idStola],
-        nizBrojeva: nizProizvoda,
         idStola: idStola,
+        nizBrojeva: nizProizvoda,
+      },
+      ...state.nizNarudzbina.slice(idStola),
+    ],
+  })),
+  on(izbrisiNarudzbinu, (state, { idStola }) => ({
+    ...state,
+    nizNarudzbina: [
+      ...state.nizNarudzbina.slice(0, idStola - 1),
+      {
+        idStola: idStola,
+        nizBrojeva: [],
       },
       ...state.nizNarudzbina.slice(idStola),
     ],
@@ -43,10 +60,24 @@ const _narudzbinaReducer = createReducer(
     nizRacuna: [
       ...state.nizRacuna.slice(0, idStola - 1),
       {
-        ...state.nizRacuna[idStola],
-        naruceniProizvodi: racun,
         idStola: idStola,
-        iznos: state.nizRacuna[idStola].iznos + iznosZadnjeNarudzbine,
+        naruceniProizvodi: [
+          ...state.nizRacuna[idStola - 1].naruceniProizvodi.concat(racun),
+        ],
+        iznos: state.nizRacuna[idStola - 1].iznos + iznosZadnjeNarudzbine,
+      },
+      ...state.nizRacuna.slice(idStola),
+    ],
+  })),
+  on(naplatiRacun, (state, { idStola }) => ({
+    ...state,
+    kasa: state.kasa + state.nizRacuna[idStola - 1].iznos,
+    nizRacuna: [
+      ...state.nizRacuna.slice(0, idStola - 1),
+      {
+        idStola: idStola,
+        naruceniProizvodi: [],
+        iznos: 0,
       },
       ...state.nizRacuna.slice(idStola),
     ],

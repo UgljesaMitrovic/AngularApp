@@ -7,6 +7,8 @@ import { Observable } from 'rxjs';
 import {
   dodajNarudzbinu,
   dodajNaRacun,
+  izbrisiNarudzbinu,
+  naplatiRacun,
 } from 'src/app/store/actions/sto.actions';
 import { getNarudzbinu, getState } from 'src/app/store/reducers';
 import { State } from 'src/app/store/reducers/sto.reducers';
@@ -53,7 +55,7 @@ export class StoComponent implements OnInit {
         this.zauzet = 'Zauzet';
         this.narudzbina = this._kaficService.napraviNarudzbinu();
         this.dodajNarudzbinuUStore(); //Svaki put da se doda narudzbina u store i da se izbaci kad se obavi
-      }, Math.random() * 20000);
+      }, Math.random() * 2000);
     } else {
       // Ako zatreba
     }
@@ -64,6 +66,7 @@ export class StoComponent implements OnInit {
         this.racun.push(data.find((proizvod) => proizvod.id == id));
       });
       this.dodajNaRacunUStore();
+      this.obrisiNarudzbinuUStore();
     });
   }
   pogledajRacun(idStola: number) {
@@ -74,6 +77,13 @@ export class StoComponent implements OnInit {
     this.store.dispatch(
       dodajNarudzbinu({
         nizProizvoda: this.narudzbina,
+        idStola: this.idStola,
+      })
+    );
+  }
+  obrisiNarudzbinuUStore() {
+    this.store.dispatch(
+      izbrisiNarudzbinu({
         idStola: this.idStola,
       })
     );

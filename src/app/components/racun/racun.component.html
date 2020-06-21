@@ -1,2 +1,9 @@
 <p>Ovo je racun stola sa brojem {{ stoId }}</p>
+<ul class="list-group" *ngFor="let stavka of racun">
+  <li class="list-group-item">
+    <pre> {{ stavka.naziv }} {{ stavka.cena }} </pre>
+  </li>
+</ul>
+<div>Za naplatu: {{ ukupanIznos }}</div>
 <button (click)="nazadNaKafic()">Nazad</button>
+<button (click)="naplatiRacunUStore()">Naplati</button>
