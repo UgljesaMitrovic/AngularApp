@@ -1,3 +1,13 @@
+.kafic-container {
+  display: flex;
+  flex-direction: column;
+}
 h1 {
   text-align: center;
+}
+.stolovi-u-kaficu {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  flex-wrap: wrap;
 }

@@ -4,6 +4,7 @@ import {
   dodajNaRacun,
   izbrisiNarudzbinu,
   naplatiRacun,
+  promeniStanje,
 } from '../actions/sto.actions';
 import { INarudzbina } from 'src/app/models/narudzbina';
 import { IRacun } from 'src/app/models/racun';
@@ -11,6 +12,7 @@ import { IRacun } from 'src/app/models/racun';
 export interface State {
   nizNarudzbina: Array<INarudzbina>;
   nizRacuna: Array<IRacun>;
+  nizStanja: Array<string>;
   kasa: number;
 }
 export const inicijalniState: State = {
@@ -20,6 +22,11 @@ export const inicijalniState: State = {
     { idStola: 3, nizBrojeva: [] },
     { idStola: 4, nizBrojeva: [] },
     { idStola: 5, nizBrojeva: [] },
+    { idStola: 6, nizBrojeva: [] },
+    { idStola: 7, nizBrojeva: [] },
+    { idStola: 8, nizBrojeva: [] },
+    { idStola: 9, nizBrojeva: [] },
+    { idStola: 10, nizBrojeva: [] },
   ],
   nizRacuna: [
     { idStola: 1, naruceniProizvodi: [], iznos: 0 },
@@ -27,6 +34,23 @@ export const inicijalniState: State = {
     { idStola: 3, naruceniProizvodi: [], iznos: 0 },
     { idStola: 4, naruceniProizvodi: [], iznos: 0 },
     { idStola: 5, naruceniProizvodi: [], iznos: 0 },
+    { idStola: 6, naruceniProizvodi: [], iznos: 0 },
+    { idStola: 7, naruceniProizvodi: [], iznos: 0 },
+    { idStola: 8, naruceniProizvodi: [], iznos: 0 },
+    { idStola: 9, naruceniProizvodi: [], iznos: 0 },
+    { idStola: 10, naruceniProizvodi: [], iznos: 0 },
+  ],
+  nizStanja: [
+    'Slobodan',
+    'Slobodan',
+    'Slobodan',
+    'Slobodan',
+    'Slobodan',
+    'Slobodan',
+    'Slobodan',
+    'Slobodan',
+    'Slobodan',
+    'Slobodan',
   ],
   kasa: 0,
 };
@@ -81,68 +105,16 @@ const _narudzbinaReducer = createReducer(
       },
       ...state.nizRacuna.slice(idStola),
     ],
+  })),
+  on(promeniStanje, (state, { stanjeStola, idStola }) => ({
+    ...state,
+    nizStanja: [
+      ...state.nizStanja.slice(0, idStola - 1),
+      stanjeStola,
+      ...state.nizStanja.slice(idStola),
+    ],
   }))
 );
 export function narudzbinaReducer(state, action) {
   return _narudzbinaReducer(state, action);
 }
-
-// export const initialState = 0;
-// //UZIMA INITIAL STATE PRVI PUT I PRAVI NOVI STATE SA PROMENJENOM VREDNOSCU SLEDECI PUT KAD BUDE POZVAN KORISTI TAJ NOVI STATE
-// const _counterReducer = createReducer(
-//   initialState,
-//   on(increment, (state) => state + 1),
-//   on(decrement, (state) => state - 1),
-//   on(reset, (state) => 0)
-// );
-
-// export function counterReducer(state, action) {
-//   return _counterReducer(state, action);
-// }
-///////////////////////////////////////////
-// export interface State {
-//   id: number;
-//   nizNarudzbina: Number[][];
-// }
-
-// export const inicijalniStateNarudzbina: State = {
-//   id: 0,
-//   nizNarudzbina: [],
-// };
-
-export const getNizNarudzbina = (state: State) => state.nizNarudzbina;
-
-// const _narudzbinaReducer = createReducer(
-//   inicijalniStateNarudzbina,
-//   on(dodajNarudzbinu, (state, { nizProizvoda, idStola }) => ({
-//     ...state,
-//     nizNarudzbina: [
-//       {
-//         ...state.nizNarudzbina[idStola],
-//         nizProizvoda,
-//       },
-//       //...state.nizNarudzbina.slice(1),
-//     ],
-//     id: idStola,
-//   }))
-// );
-// export function narudzbinaReducer(state, action) {
-//   return _narudzbinaReducer(state, action);
-// }
-
-////////////////////////////////////////////
-// export interface State {
-//   home: number;
-//   away: number;
-// }
-// export const initialState: State = {
-//   home: 0,
-//   away: 0,
-// };
-// const scoreboardReducer = createReducer(
-//   initialState,
-//   on(ScoreboardPageActions.homeScore, state => ({ ...state, home: state.home + 1 })),
-//   on(ScoreboardPageActions.awayScore, state => ({ ...state, away: state.away + 1 })),
-//   on(ScoreboardPageActions.resetScore, state => ({ home: 0, away: 0 })),
-//   on(ScoreboardPageActions.setScores, (state, { game }) => ({ home: game.home, away: game.away }))
-// );

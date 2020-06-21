@@ -4,7 +4,11 @@ import { Store, select } from '@ngrx/store';
 import { State } from 'src/app/store/reducers/sto.reducers';
 import { getRacun } from 'src/app/store/reducers';
 import { IProizvod } from 'src/app/models/proizvod';
-import { naplatiRacun } from 'src/app/store/actions/sto.actions';
+import {
+  naplatiRacun,
+  promeniStanje,
+  izbrisiNarudzbinu,
+} from 'src/app/store/actions/sto.actions';
 
 @Component({
   selector: 'app-racun',
@@ -23,7 +27,6 @@ export class RacunComponent implements OnInit {
 
   ngOnInit(): void {
     //let id = parseInt(this.route.snapshot.paramMap.get('id'));
-    //this.stoId = id;
     this.route.paramMap.subscribe((params: ParamMap) => {
       // Za trenutni url da napravi komponentu (na osnovu id-a)
       let id = parseInt(params.get('id'));
@@ -35,12 +38,22 @@ export class RacunComponent implements OnInit {
     });
   }
   nazadNaKafic() {
-    //let id = this.stoId ? this.stoId : null;
     this.router.navigate(['']);
   }
   naplatiRacunUStore() {
     this.store.dispatch(
       naplatiRacun({
+        idStola: this.stoId,
+      })
+    );
+    this.store.dispatch(
+      izbrisiNarudzbinu({
+        idStola: this.stoId,
+      })
+    );
+    this.store.dispatch(
+      promeniStanje({
+        stanjeStola: 'Slobodan',
         idStola: this.stoId,
       })
     );

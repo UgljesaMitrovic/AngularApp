@@ -1,9 +1,16 @@
-<p>Ovo je racun stola sa brojem {{ stoId }}</p>
-<ul class="list-group" *ngFor="let stavka of racun">
-  <li class="list-group-item">
-    <pre> {{ stavka.naziv }} {{ stavka.cena }} </pre>
-  </li>
-</ul>
-<div>Za naplatu: {{ ukupanIznos }}</div>
-<button (click)="nazadNaKafic()">Nazad</button>
-<button (click)="naplatiRacunUStore()">Naplati</button>
+<div class="racun-container">
+  <b> Ovo je racun stola sa brojem {{ stoId }} </b>
+  <ul class="list-group" *ngFor="let stavka of racun">
+    <li class="list-group-item">
+      <pre> {{ stavka.naziv }} {{ stavka.cena }} </pre>
+    </li>
+  </ul>
+  <div>
+    Za naplatu:
+    <label [style.color]="'blue'">{{ ukupanIznos }}</label>
+  </div>
+  <button (click)="nazadNaKafic()">Nazad</button>
+  <button (click)="naplatiRacunUStore()">
+    <div [style.color]="'blue'">Naplati</div>
+  </button>
+</div>

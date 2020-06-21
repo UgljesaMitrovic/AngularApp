@@ -1,6 +1,5 @@
 import { createSelector, createFeatureSelector, props } from '@ngrx/store';
-import { getNizNarudzbina, State } from './sto.reducers';
-import { INarudzbina } from 'src/app/models/narudzbina';
+import { State } from './sto.reducers';
 
 export const getState = createFeatureSelector('naruci');
 
@@ -17,12 +16,7 @@ export const getRacun = createSelector(
 
 export const getKasu = createSelector(getState, (state: State) => state.kasa);
 
-/* export const getNarudzbinuNizBrojeva = createSelector(
-  getNarudzbinu,
-  (niz: Array<INarudzbina>) => niz[0].nizBrojeva
+export const getStanje = createSelector(
+  getState,
+  (state: State) => state.nizStanja
 );
-export const getNarudzbinuIdStola = createSelector(
-  getNarudzbinu,
-  (niz: Array<INarudzbina>) => niz[0].idStola
-);
- */

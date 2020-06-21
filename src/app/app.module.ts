@@ -11,7 +11,6 @@ import { PageNotFoundComponent } from './components/page-not-found/page-not-foun
 import { StoreModule } from '@ngrx/store';
 // import { counterReducer } from './store/reducers/sto.reducers';
 import { narudzbinaReducer } from './store/reducers/sto.reducers';
-import { MyCounterComponent } from './components/my-counter/my-counter.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +19,6 @@ import { MyCounterComponent } from './components/my-counter/my-counter.component
     StoComponent,
     RacunComponent,
     PageNotFoundComponent,
-    MyCounterComponent,
   ],
   imports: [
     BrowserModule,

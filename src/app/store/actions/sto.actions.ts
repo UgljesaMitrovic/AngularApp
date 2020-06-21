@@ -1,10 +1,6 @@
 import { createAction, props } from '@ngrx/store';
 import { IProizvod } from 'src/app/models/proizvod';
 
-export const increment = createAction('[Counter Component] Increment');
-export const decrement = createAction('[Counter Component] Decrement');
-export const reset = createAction('[Counter Component] Reset');
-
 export const dodajNarudzbinu = createAction(
   '[sto komponenta] dodaj narudzbinu',
   props<{ nizProizvoda: Number[]; idStola: number }>()
@@ -24,6 +20,13 @@ export const dodajNaRacun = createAction(
 export const naplatiRacun = createAction(
   '[sto komponenta] naplati racun stola',
   props<{
+    idStola: number;
+  }>()
+);
+export const promeniStanje = createAction(
+  '[sto komponenta] promeni stanje stola',
+  props<{
+    stanjeStola: string;
     idStola: number;
   }>()
 );

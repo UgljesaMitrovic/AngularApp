@@ -11,7 +11,7 @@ import { getKasu } from 'src/app/store/reducers';
 export class KaficComponent implements OnInit {
   public naziv: string = 'ElectroniCaffe';
   public kasa: number;
-  public stolovi: Array<number> = [1, 2, 3, 4, 5];
+  public stolovi: Array<number> = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 
   constructor(private store: Store<{ naruci: State }>) {}
 

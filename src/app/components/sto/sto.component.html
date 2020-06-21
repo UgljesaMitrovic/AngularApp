@@ -1,12 +1,14 @@
 <div class="sto-container">
-  <p [style.color]="zauzet == 'Zauzet' ? 'red' : 'green'">
-    Sto br.{{ idStola }}
-  </p>
+  <div [style.background-color]="zauzet == 'Zauzet' ? 'red' : 'green'">
+    <b
+      >Sto br. <b>{{ idStola }}</b></b
+    >
+  </div>
   <div class="narudzbina">
     <div class="brojevi-narudzbine">
-      <div *ngFor="let stavka of narudzbina">
+      <ng-container *ngFor="let stavka of narudzbina">
         <pre> {{ stavka }} </pre>
-      </div>
+      </ng-container>
     </div>
     <button *ngIf="narudzbina.length > 0" (click)="donesiNarudzbinu()">
       Donesi

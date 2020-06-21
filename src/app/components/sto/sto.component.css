@@ -3,13 +3,20 @@
   flex-direction: column;
   align-items: center;
   border: 1px solid black;
+  min-width: 200px;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  margin-left: 10px;
+  margin-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 .narudzbina {
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: rgb(246, 93, 93);
-  width: 30%;
+  width: 50%;
 }
 .brojevi-narudzbine {
   display: flex;

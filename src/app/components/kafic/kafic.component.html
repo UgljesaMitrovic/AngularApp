@@ -1,6 +1,9 @@
-<h1>Dobrodosli u {{ naziv }}</h1>
-<app-my-counter></app-my-counter>
-<h2>Kasa kafica: {{ kasa }}</h2>
-<div *ngFor="let stoBroj of stolovi">
-  <app-sto [idStola]="stoBroj"></app-sto>
+<div class="kafic-container">
+  <h1>Dobrodosli u {{ naziv }}</h1>
+  <h2>Kasa kafica: {{ kasa }}</h2>
+  <div class="stolovi-u-kaficu">
+    <ng-container *ngFor="let stoBroj of stolovi">
+      <app-sto [idStola]="stoBroj"></app-sto>
+    </ng-container>
+  </div>
 </div>
