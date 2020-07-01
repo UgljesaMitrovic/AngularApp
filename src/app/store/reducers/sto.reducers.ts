@@ -6,10 +6,12 @@ import {
   naplatiRacun,
   promeniStanje,
   napraviRacun,
+  sacuvajMeni,
 } from '../actions/sto.actions';
 import { INarudzbina } from 'src/app/models/narudzbina';
 import { IRacun } from 'src/app/models/racun';
 import { EntityState, createEntityAdapter } from '@ngrx/entity';
+import { IProizvod } from 'src/app/models/proizvod';
 
 interface NarudzbinaState extends EntityState<INarudzbina> {
   ids: number[];
@@ -20,15 +22,21 @@ interface RacunState extends EntityState<IRacun> {
   ids: number[];
   entities: { [id: number]: IRacun };
 }
+interface MeniState extends EntityState<IProizvod> {
+  ids: number[];
+  entities: { [id: number]: IProizvod };
+}
 export interface State {
   nizNarudzbina: NarudzbinaState;
   nizRacuna: RacunState;
+  nizProizvoda: MeniState;
   nizStanja: Array<string>;
   kasa: number;
 }
 
 const adapterNarudzbina = createEntityAdapter<INarudzbina>();
 const adapterRacun = createEntityAdapter<IRacun>();
+const adapterMeni = createEntityAdapter<IProizvod>();
 
 const NarudzbinaInitialState: NarudzbinaState = adapterNarudzbina.getInitialState(
   {
@@ -40,9 +48,14 @@ const RacunInitialState: RacunState = adapterRacun.getInitialState({
   ids: [],
   entities: [],
 });
+const MeniInitialState: MeniState = adapterMeni.getInitialState({
+  ids: [],
+  entities: [],
+});
 const initialState = {
   nizNarudzbina: NarudzbinaInitialState,
   nizRacuna: RacunInitialState,
+  nizProizvoda: MeniInitialState,
   nizStanja: [
     'Slobodan',
     'Slobodan',
@@ -57,8 +70,12 @@ const initialState = {
   ],
   kasa: 0,
 };
-const _narudzbinaReducer = createReducer(
+const _stateReducer = createReducer(
   initialState,
+  on(sacuvajMeni, (state, action) => ({
+    ...state,
+    nizProizvoda: adapterMeni.addAll(action.proizvodi, state.nizProizvoda),
+  })),
   on(dodajNarudzbinu, (state, action) => ({
     ...state,
     nizNarudzbina: adapterNarudzbina.addOne(
@@ -108,8 +125,8 @@ const _narudzbinaReducer = createReducer(
     ],
   }))
 );
-export function narudzbinaReducer(state, action) {
-  return _narudzbinaReducer(state, action);
+export function stateReducer(state, action) {
+  return _stateReducer(state, action);
 }
 //Selectors
 // export const selectNarudzbinaState = (state: State) => state.nizNarudzbina;

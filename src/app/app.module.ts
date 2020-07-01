@@ -9,7 +9,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { RacunComponent } from './components/racun/racun.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { StoreModule } from '@ngrx/store';
-import { narudzbinaReducer } from './store/reducers/sto.reducers';
+import { stateReducer } from './store/reducers/sto.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { StoEffects } from './store/effects/sto.effects';
 
 @NgModule({
   declarations: [
@@ -23,7 +25,8 @@ import { narudzbinaReducer } from './store/reducers/sto.reducers';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    StoreModule.forRoot({ naruci: narudzbinaReducer }),
+    StoreModule.forRoot({ state: stateReducer }),
+    EffectsModule.forRoot([StoEffects]),
   ],
   providers: [],
   bootstrap: [AppComponent],

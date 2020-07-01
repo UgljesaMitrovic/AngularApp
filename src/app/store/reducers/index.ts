@@ -1,9 +1,8 @@
 import { createSelector, createFeatureSelector, props } from '@ngrx/store';
 import { State } from './sto.reducers';
 
-export const getState = createFeatureSelector('naruci');
+export const getState = createFeatureSelector('state');
 
-// iz getState dobijas osnovni state ovo u zagradi i u okviru tog nivoa pristupas nizu narudzbina
 export const getNarudzbinu = createSelector(
   getState,
   (state: State) => state.nizNarudzbina
@@ -19,4 +18,8 @@ export const getKasu = createSelector(getState, (state: State) => state.kasa);
 export const getStanje = createSelector(
   getState,
   (state: State) => state.nizStanja
+);
+export const getMeni = createSelector(
+  getState,
+  (state: State) => state.nizProizvoda
 );

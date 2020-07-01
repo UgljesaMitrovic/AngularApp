@@ -40,3 +40,10 @@ export const promeniStanje = createAction(
     idStola: number;
   }>()
 );
+export const fetchMeni = createAction(
+  '[sto komponenta] digni sve proizvode iz meni-a'
+);
+export const sacuvajMeni = createAction(
+  '[sto komponenta] sacuvaj meni u store',
+  props<{ proizvodi: IProizvod[] }>()
+);

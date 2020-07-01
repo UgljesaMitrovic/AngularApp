@@ -4,7 +4,6 @@ import { IProizvod } from '../../models/proizvod';
 import { IRacun } from '../../models/racun';
 import { Router } from '@angular/router';
 import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import {
   dodajNarudzbinu,
   dodajNaRacun,
@@ -14,9 +13,9 @@ import {
 } from 'src/app/store/actions/sto.actions';
 import {
   getNarudzbinu,
-  getState,
   getStanje,
   getRacun,
+  getMeni,
 } from 'src/app/store/reducers';
 import { State } from 'src/app/store/reducers/sto.reducers';
 import { INarudzbina } from 'src/app/models/narudzbina';
@@ -30,19 +29,25 @@ export class StoComponent implements OnInit {
   @Input() public idStola: number;
   public zauzet: string = 'Slobodan';
   public narudzbina: Number[] = [];
-  public racun: Array<IProizvod> = [];
+  public meni: IProizvod[] = [];
+  public proizvodiZaNoviRacun: Array<IProizvod> = [];
   public racunPostoji: boolean = false;
   constructor(
     private _kaficService: KaficService,
     private router: Router,
     private store: Store<{ naruci: State }>
-  ) {
-    // store.subscribe((s) => {
-    //   console.log(s);
-    // });
-  }
+  ) {}
 
   ngOnInit(): void {
+    this.store.dispatch({
+      type: '[sto komponenta] digni sve proizvode iz meni-a',
+    });
+    this.store.pipe(select(getMeni)).subscribe((data) => {
+      this.meni = [];
+      data.ids.forEach((id) => {
+        this.meni.push(data.entities[id]);
+      });
+    });
     this.store.pipe(select(getNarudzbinu)).subscribe((data) => {
       if (
         data.ids.find((el) => {
@@ -70,21 +75,21 @@ export class StoComponent implements OnInit {
         this.promeniStanjeStolaUStore('Zauzet');
         this.narudzbina = this._kaficService.napraviNarudzbinu();
         this.dodajNarudzbinuUStore(); //Svaki put da se doda narudzbina u store i da se izbaci kad se obavi
-      }, Math.random() * 20000);
+      }, Math.random() * 2000);
     }
   }
   donesiNarudzbinu() {
-    this._kaficService.donesiNarudzbinu().subscribe((data) => {
-      this.narudzbina.forEach((id) => {
-        this.racun.push(data.find((proizvod) => proizvod.id == id));
-      });
-      if (this.racunPostoji == true) this.dodajNaRacunUStore();
-      else this.napraviRacun();
-      this.obrisiNarudzbinuUStore();
+    this.narudzbina.forEach((id) => {
+      this.proizvodiZaNoviRacun.push(
+        this.meni.find((proizvod) => proizvod.id == id)
+      );
     });
+    if (this.racunPostoji == true) this.dodajNaRacunUStore();
+    else this.napraviRacun();
+    this.obrisiNarudzbinuUStore();
   }
   pogledajRacun(idStola: number) {
-    this.router.navigate(['/racun', idStola]); //Prepravi url na trentni kroz racun sa Id stola na koji si kliknuo
+    this.router.navigate(['/racun', idStola]); //Url na trentni kroz racun sa Id stola na koji si kliknuo
   }
   //Akcije
   dodajNarudzbinuUStore() {
@@ -105,22 +110,26 @@ export class StoComponent implements OnInit {
     );
   }
   dodajNaRacunUStore() {
-    var racun = {} as IRacun;
-    racun.id = this.idStola;
-    racun.naruceniProizvodi = this.racun;
-    racun.iznos = this._kaficService.izracunajIznosNarudzbine(this.racun);
+    var dopuniRacun = {} as IRacun;
+    dopuniRacun.id = this.idStola;
+    dopuniRacun.naruceniProizvodi = this.proizvodiZaNoviRacun;
+    dopuniRacun.iznos = this._kaficService.izracunajIznosNarudzbine(
+      this.proizvodiZaNoviRacun
+    );
     this.store.dispatch(
       dodajNaRacun({
         idStola: this.idStola,
-        changes: racun,
+        changes: dopuniRacun,
       })
     );
   }
   napraviRacun() {
     var racun = {} as IRacun;
     racun.id = this.idStola;
-    racun.naruceniProizvodi = this.racun;
-    racun.iznos = this._kaficService.izracunajIznosNarudzbine(this.racun);
+    racun.naruceniProizvodi = this.proizvodiZaNoviRacun;
+    racun.iznos = this._kaficService.izracunajIznosNarudzbine(
+      this.proizvodiZaNoviRacun
+    );
     this.store.dispatch(
       napraviRacun({
         racun: racun,
