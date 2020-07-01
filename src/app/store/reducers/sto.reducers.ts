@@ -112,10 +112,10 @@ export function narudzbinaReducer(state, action) {
   return _narudzbinaReducer(state, action);
 }
 //Selectors
-export const selectNarudzbinaState = (state: State) => state.nizNarudzbina;
-export const selectRacunState = (state: State) => state.nizRacuna;
+// export const selectNarudzbinaState = (state: State) => state.nizNarudzbina;
+// export const selectRacunState = (state: State) => state.nizRacuna;
 
-export const {
-  selectAll: selectAllNarudzbine,
-} = adapterNarudzbina.getSelectors();
-export const { selectAll: selectAllRacune } = adapterRacun.getSelectors();
+// export const {
+//   selectAll: selectAllNarudzbine,
+// } = adapterNarudzbina.getSelectors();
+// export const { selectAll: selectAllRacune } = adapterRacun.getSelectors();

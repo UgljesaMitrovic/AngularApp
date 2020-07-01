@@ -18,10 +18,7 @@ import {
   getStanje,
   getRacun,
 } from 'src/app/store/reducers';
-import {
-  State,
-  selectAllNarudzbine,
-} from 'src/app/store/reducers/sto.reducers';
+import { State } from 'src/app/store/reducers/sto.reducers';
 import { INarudzbina } from 'src/app/models/narudzbina';
 
 @Component({
