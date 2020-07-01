@@ -1,4 +1,4 @@
 export interface INarudzbina {
-  idStola: number;
+  id: number;
   nizBrojeva: Array<Number>;
 }

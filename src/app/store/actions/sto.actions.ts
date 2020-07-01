@@ -1,20 +1,29 @@
 import { createAction, props } from '@ngrx/store';
 import { IProizvod } from 'src/app/models/proizvod';
+import { INarudzbina } from 'src/app/models/narudzbina';
+import { IRacun } from 'src/app/models/racun';
 
 export const dodajNarudzbinu = createAction(
   '[sto komponenta] dodaj narudzbinu',
-  props<{ nizProizvoda: Number[]; idStola: number }>()
+  props<{
+    narudzbina: INarudzbina;
+  }>()
 );
 export const izbrisiNarudzbinu = createAction(
   '[sto komponenta] izbrisi narudzbinu',
   props<{ idStola: number }>()
 );
+export const napraviRacun = createAction(
+  '[sto komponenta] napravi racun',
+  props<{
+    racun: IRacun;
+  }>()
+);
 export const dodajNaRacun = createAction(
   '[sto komponenta] dodaj u racun stola',
   props<{
-    racun: IProizvod[];
     idStola: number;
-    iznosZadnjeNarudzbine: number;
+    changes: IRacun;
   }>()
 );
 export const naplatiRacun = createAction(
@@ -23,6 +32,7 @@ export const naplatiRacun = createAction(
     idStola: number;
   }>()
 );
+
 export const promeniStanje = createAction(
   '[sto komponenta] promeni stanje stola',
   props<{

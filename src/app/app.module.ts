@@ -9,7 +9,6 @@ import { HttpClientModule } from '@angular/common/http';
 import { RacunComponent } from './components/racun/racun.component';
 import { PageNotFoundComponent } from './components/page-not-found/page-not-found.component';
 import { StoreModule } from '@ngrx/store';
-// import { counterReducer } from './store/reducers/sto.reducers';
 import { narudzbinaReducer } from './store/reducers/sto.reducers';
 
 @NgModule({
@@ -24,7 +23,6 @@ import { narudzbinaReducer } from './store/reducers/sto.reducers';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    // StoreModule.forRoot({ count: counterReducer }),
     StoreModule.forRoot({ naruci: narudzbinaReducer }),
   ],
   providers: [],

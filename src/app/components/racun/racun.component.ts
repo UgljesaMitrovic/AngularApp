@@ -33,8 +33,17 @@ export class RacunComponent implements OnInit {
       this.stoId = id;
     });
     this.store.pipe(select(getRacun)).subscribe((data) => {
-      this.racun = data[this.stoId - 1].naruceniProizvodi;
-      this.ukupanIznos = data[this.stoId - 1].iznos;
+      if (
+        data.ids.find((el) => {
+          return el == this.stoId;
+        }) != undefined
+      ) {
+        this.racun = data.entities[this.stoId].naruceniProizvodi;
+        this.ukupanIznos = data.entities[this.stoId].iznos;
+      } else {
+        this.racun = [];
+        this.ukupanIznos = 0;
+      }
     });
   }
   nazadNaKafic() {

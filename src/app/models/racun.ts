@@ -1,7 +1,7 @@
 import { IProizvod } from './proizvod';
 
 export interface IRacun {
-  idStola: number;
+  id: number;
   naruceniProizvodi: Array<IProizvod>;
   iznos: number;
 }

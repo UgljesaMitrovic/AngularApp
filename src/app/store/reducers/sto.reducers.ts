@@ -5,41 +5,44 @@ import {
   izbrisiNarudzbinu,
   naplatiRacun,
   promeniStanje,
+  napraviRacun,
 } from '../actions/sto.actions';
 import { INarudzbina } from 'src/app/models/narudzbina';
 import { IRacun } from 'src/app/models/racun';
+import { EntityState, createEntityAdapter } from '@ngrx/entity';
 
+interface NarudzbinaState extends EntityState<INarudzbina> {
+  ids: number[];
+  entities: { [id: number]: INarudzbina };
+}
+
+interface RacunState extends EntityState<IRacun> {
+  ids: number[];
+  entities: { [id: number]: IRacun };
+}
 export interface State {
-  nizNarudzbina: Array<INarudzbina>;
-  nizRacuna: Array<IRacun>;
+  nizNarudzbina: NarudzbinaState;
+  nizRacuna: RacunState;
   nizStanja: Array<string>;
   kasa: number;
 }
-export const inicijalniState: State = {
-  nizNarudzbina: [
-    { idStola: 1, nizBrojeva: [] },
-    { idStola: 2, nizBrojeva: [] },
-    { idStola: 3, nizBrojeva: [] },
-    { idStola: 4, nizBrojeva: [] },
-    { idStola: 5, nizBrojeva: [] },
-    { idStola: 6, nizBrojeva: [] },
-    { idStola: 7, nizBrojeva: [] },
-    { idStola: 8, nizBrojeva: [] },
-    { idStola: 9, nizBrojeva: [] },
-    { idStola: 10, nizBrojeva: [] },
-  ],
-  nizRacuna: [
-    { idStola: 1, naruceniProizvodi: [], iznos: 0 },
-    { idStola: 2, naruceniProizvodi: [], iznos: 0 },
-    { idStola: 3, naruceniProizvodi: [], iznos: 0 },
-    { idStola: 4, naruceniProizvodi: [], iznos: 0 },
-    { idStola: 5, naruceniProizvodi: [], iznos: 0 },
-    { idStola: 6, naruceniProizvodi: [], iznos: 0 },
-    { idStola: 7, naruceniProizvodi: [], iznos: 0 },
-    { idStola: 8, naruceniProizvodi: [], iznos: 0 },
-    { idStola: 9, naruceniProizvodi: [], iznos: 0 },
-    { idStola: 10, naruceniProizvodi: [], iznos: 0 },
-  ],
+
+const adapterNarudzbina = createEntityAdapter<INarudzbina>();
+const adapterRacun = createEntityAdapter<IRacun>();
+
+const NarudzbinaInitialState: NarudzbinaState = adapterNarudzbina.getInitialState(
+  {
+    ids: [],
+    entities: [],
+  }
+);
+const RacunInitialState: RacunState = adapterRacun.getInitialState({
+  ids: [],
+  entities: [],
+});
+const initialState = {
+  nizNarudzbina: NarudzbinaInitialState,
+  nizRacuna: RacunInitialState,
   nizStanja: [
     'Slobodan',
     'Slobodan',
@@ -54,57 +57,47 @@ export const inicijalniState: State = {
   ],
   kasa: 0,
 };
-
 const _narudzbinaReducer = createReducer(
-  inicijalniState,
-  on(dodajNarudzbinu, (state, { nizProizvoda, idStola }) => ({
+  initialState,
+  on(dodajNarudzbinu, (state, action) => ({
     ...state,
-    nizNarudzbina: [
-      ...state.nizNarudzbina.slice(0, idStola - 1),
-      {
-        idStola: idStola,
-        nizBrojeva: nizProizvoda,
-      },
-      ...state.nizNarudzbina.slice(idStola),
-    ],
+    nizNarudzbina: adapterNarudzbina.addOne(
+      action.narudzbina,
+      state.nizNarudzbina
+    ),
   })),
-  on(izbrisiNarudzbinu, (state, { idStola }) => ({
+  on(izbrisiNarudzbinu, (state, action) => ({
     ...state,
-    nizNarudzbina: [
-      ...state.nizNarudzbina.slice(0, idStola - 1),
-      {
-        idStola: idStola,
-        nizBrojeva: [],
-      },
-      ...state.nizNarudzbina.slice(idStola),
-    ],
+    nizNarudzbina: adapterNarudzbina.removeOne(
+      action.idStola,
+      state.nizNarudzbina
+    ),
   })),
-  on(dodajNaRacun, (state, { racun, idStola, iznosZadnjeNarudzbine }) => ({
+  on(napraviRacun, (state, action) => ({
     ...state,
-    nizRacuna: [
-      ...state.nizRacuna.slice(0, idStola - 1),
-      {
-        idStola: idStola,
-        naruceniProizvodi: [
-          ...state.nizRacuna[idStola - 1].naruceniProizvodi.concat(racun),
-        ],
-        iznos: state.nizRacuna[idStola - 1].iznos + iznosZadnjeNarudzbine,
-      },
-      ...state.nizRacuna.slice(idStola),
-    ],
+    nizRacuna: adapterRacun.addOne(action.racun, state.nizRacuna),
   })),
-  on(naplatiRacun, (state, { idStola }) => ({
+  on(dodajNaRacun, (state, action) => ({
     ...state,
-    kasa: state.kasa + state.nizRacuna[idStola - 1].iznos,
-    nizRacuna: [
-      ...state.nizRacuna.slice(0, idStola - 1),
+    nizRacuna: adapterRacun.updateOne(
       {
-        idStola: idStola,
-        naruceniProizvodi: [],
-        iznos: 0,
+        id: action.idStola,
+        changes: {
+          naruceniProizvodi: state.nizRacuna.entities[
+            action.idStola
+          ].naruceniProizvodi.concat(action.changes.naruceniProizvodi),
+          iznos:
+            state.nizRacuna.entities[action.idStola].iznos +
+            action.changes.iznos,
+        },
       },
-      ...state.nizRacuna.slice(idStola),
-    ],
+      state.nizRacuna
+    ),
+  })),
+  on(naplatiRacun, (state, action) => ({
+    ...state,
+    kasa: state.kasa + state.nizRacuna.entities[action.idStola].iznos,
+    nizRacuna: adapterRacun.removeOne(action.idStola, state.nizRacuna),
   })),
   on(promeniStanje, (state, { stanjeStola, idStola }) => ({
     ...state,
@@ -118,3 +111,11 @@ const _narudzbinaReducer = createReducer(
 export function narudzbinaReducer(state, action) {
   return _narudzbinaReducer(state, action);
 }
+//Selectors
+export const selectNarudzbinaState = (state: State) => state.nizNarudzbina;
+export const selectRacunState = (state: State) => state.nizRacuna;
+
+export const {
+  selectAll: selectAllNarudzbine,
+} = adapterNarudzbina.getSelectors();
+export const { selectAll: selectAllRacune } = adapterRacun.getSelectors();
